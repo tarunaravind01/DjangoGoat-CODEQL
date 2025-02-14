@@ -33,6 +33,63 @@
 </header>
 <div class='center w-50-ns w-100'>
   <article class="center mw5 mw6-ns hidden ba b--white mv4">
+    <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A1 OWASP</h3>
+    <h2 class="f5 bg-white near-black mv0 pv2 ph3">SQL Injection</h2>
+    <div class="pa3 bt b--white">
+      <h3 class='f6'>Where</h3>
+      <p class="f6 lh-copy measure mv0">
+        Login page
+      </p>
+      <h3 class='f6'>Details</h3>
+      <p class="f6 lh-copy measure">
+        Users are authenticated using a raw SQL query which creates a SQL
+        injection vulnerability.
+      </p>
+      <h3 class='f6'>Possible exploitation</h3>
+      <p class="f6 lh-copy measure">
+        A malicious user can log in as any user from the login form. They would
+        enter that user's username in the username field, and enter the string
+        "' OR '1'='1" in the password field.
+      </p>
+      <p class="f6 lh-copy measure">
+        <b>OWASP Top 10 reference:</b>
+        <a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection"
+          class='link dim'>
+          A1 - Injection
+        </a>
+      </p>
+    </div>
+  </article>
+  <article class="center mw5 mw6-ns hidden ba b--white mv4">
+    <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A2 OWASP</h3>
+    <h2 class="f5 bg-white near-black mv0 pv2 ph3">Poor password rules</h2>
+    <div class="pa3 bt b--white">
+      <h3 class='f6'>Where</h3>
+      <p class="f6 lh-copy measure mv0">
+        Sign up, settings.py
+      </p>
+      <h3 class='f6'>Details</h3>
+      <p class="f6 lh-copy measure">
+        There are no controls on the length, complexity, similarity or
+        commonness of the password a user chooses.
+      </p>
+      <h3 class='f6'>Possible exploitation</h3>
+      <p class="f6 lh-copy measure">
+        This means a user could choose a weak or common password, making it
+        much easier for an attacker to guess. A manual attack will quickly
+        crack a password like 'password', but even with random or more obscure
+        passwords, if they are short enough a script can crack them.
+      </p>
+      <p class="f6 lh-copy measure">
+        <b>OWASP Top 10 reference:</b>
+        <a href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication"
+          class='link dim'>
+          A2-Broken Authentication
+        </a>
+      </p>
+    </div>
+  </article>
+  <article class="center mw5 mw6-ns hidden ba b--white mv4">
     <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A2 OWASP</h3>
     <h2 class="f5 bg-white near-black mv0 pv2 ph3">Vulnerable authentication</h2>
     <div class="pa3 bt b--white">
@@ -41,7 +98,7 @@
         Log in page
       </p>
       <h3 class='f6'>Details</h3>
-      <p class="f6 lh-copy measure mv0">
+      <p class="f6 lh-copy measure">
         The app has no rate limiting on the log in page and doesn't use
         multi-factor authentication.
         Rate limiting and multi-factor aren't built in to Django, and we did
@@ -54,12 +111,196 @@
         attacks. A malicious user or bot could try to guess a legitmate user's
         password as many times as they need to until they succeed.
       </p>
-      <p class="f6 lh-copy measure mv0">
+      <p class="f6 lh-copy measure">
         <b>OWASP Top 10 reference:</b>
         <a href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication"
           class='link dim'>
           A2-Broken Authentication
         </a>
+      </p>
+    </div>
+  </article>
+  <article class="center mw5 mw6-ns hidden ba b--white mv4">
+    <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A5 OWASP</h3>
+    <h2 class="f5 bg-white near-black mv0 pv2 ph3">Access to other users' data</h2>
+    <div class="pa3 bt b--white">
+      <h3 class='f6'>Where</h3>
+      <p class="f6 lh-copy measure mv0">
+        Note page
+      </p>
+      <h3 class='f6'>Details</h3>
+      <p class="f6 lh-copy measure">
+        The url for any given note includes its pk. The note should only be
+        available to a user who is either the receiver or sender of the note.
+        But because we made a mistake in the view, it is available to any
+        authenticated user. In the view, we remembered the login_required
+        decorator, but forgot to test the user was party to the note.
+      </p>
+      <p class="f6 lh-copy measure">
+        ZAP can't detect this sort of vulnerability, because it doesn't know
+        what any given user ought to be able to view. To pick up such an issue
+        in testing, you should write a BDD test to check that when a user
+        browses to a url they should not access, they get a 404 or 403.
+      </p>
+      <h3 class='f6'>Possible exploitation</h3>
+      <p class="f6 lh-copy measure">
+        This attack is simple - a malicious user just modifies the url to
+        include the pk of a note they shouldn't access. In this app it isn't
+        easy to guess the url of a specific note, however this type of mistake
+        could be very concerning in an app where the url of a target is easier
+        to guess, such as where the url includes a username.
+      </p>
+      <p class="f6 lh-copy measure">
+        <b>OWASP Top 10 reference:</b>
+        <a href="https://www.owasp.org/index.php/Top_10-2017_A5-Broken_Access_Control"
+          class='link dim'>
+          A5-Broken Access Control
+        </a>
+      </p>
+    </div>
+  </article>
+  <article class="center mw5 mw6-ns hidden ba b--white mv4">
+    <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A5 OWASP</h3>
+    <h2 class="f5 bg-white near-black mv0 pv2 ph3">Unauthenticated user can access logged-in content</h2>
+    <div class="pa3 bt b--white">
+      <h3 class='f6'>Where</h3>
+      <p class="f6 lh-copy measure mv0">
+        Profile page
+      </p>
+      <h3 class='f6'>Details</h3>
+      <p class="f6 lh-copy measure">
+        We were coding in a hurry, and we accidentally left the login_required
+        decorator off the profile view. Now anyone can see all our users'
+        profiles by browsing to any profile url.
+      </p>
+      <p class="f6 lh-copy measure">
+        As with the previous error, ZAP can't detect this sort of vulnerability,
+        because it doesn't know what any given user ought to be able to view.
+        To pick up such an issue in testing, you should write a BDD test to
+        check that when a user browses to a url they should not access, they
+        get a 404 or 403.
+      </p>
+      <p class="f6 lh-copy measure">
+        To avoid this vulnerability, it's also good practice to use a decorator
+        on every view, including public content. This makes it less likely
+        that you'll miss one.
+      </p>
+      <h3 class='f6'>Possible exploitation</h3>
+      <p class="f6 lh-copy measure">
+        A malicious user only needs to browse to the profile they'd like to see.
+        In this app we use pk in the url, but if we had used the username, it
+        would be even easier to find a targeted victim.
+      </p>
+      <p class="f6 lh-copy measure">
+        As it is, a malicious user could use this vulnerability to gather data
+        on all the app's users, including their photos, usernames and
+        interests. This could be later used to inform credential stuffing
+        attacks.
+      </p>
+      <p class="f6 lh-copy measure">
+        <b>OWASP Top 10 reference:</b>
+        <a href="https://www.owasp.org/index.php/Top_10-2017_A5-Broken_Access_Control"
+          class='link dim'>
+          A5-Broken Access Control
+        </a>
+      </p>
+    </div>
+  </article>
+  <article class="center mw5 mw6-ns hidden ba b--white mv4">
+    <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A6 OWASP</h3>
+    <h2 class="f5 bg-white near-black mv0 pv2 ph3">Security Misconfiguration</h2>
+    <div class="pa3 bt b--white">
+      <h3 class='f6'>Where</h3>
+      <p class="f6 lh-copy measure mv0">
+        settings.py
+      </p>
+      <h3 class='f6'>Details</h3>
+      <p class="f6 lh-copy measure mv0">
+        We've made several minor changes to the settings.py file, all of which
+        actually mirror Django's defaults. We've removed CSRF_COOKIE_HTTPONLY,
+        CSRF_COOKIE_SECURE, SECURE_BROWSER_XSS_FILTER,
+        SECURE_CONTENT_TYPE_NOSNIFF, and SESSION_COOKIE_SECURE from the
+        settings.py file, effectively setting them to False.
+      </p>
+      <p class="f6 lh-copy measure mv0">
+        We've also changed DEBUG to be True, which leaks data about our code.
+      </p>
+      <h3 class='f6'>Possible exploitation</h3>
+      <p class="f6 lh-copy measure mv0">
+        On their own, each of these changes might not make a lot of difference.
+        But they added extra layers of protection against attacks such as
+        cross-site scripting and cross site request forgery, making it a little
+        harder for an attacker to imitate a real user, or exfiltrate data once
+        they accessed it.
+      </p>
+      <p class="f6 lh-copy measure mv0">
+        <b>OWASP Top 10 reference:</b>
+        <a href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration"
+          class='link dim'>
+          A6-Security Misconfiguration
+        </a>
+      </p>
+    </div>
+  </article>
+  <article class="center mw5 mw6-ns hidden ba b--white mv4">
+    <h3 class="f7 bg-transparent near-black mv0 pv2 ph3 ba b--white">A7 OWASP</h3>
+    <h2 class="f5 bg-white near-black mv0 pv2 ph3">Cross site scripting</h2>
+    <div class="pa3 bt b--white">
+      <h3 class='f6'>Where</h3>
+      <p class="f6 lh-copy measure mv0">
+        Conversation page
+        Dash page
+      </p>
+      <h3 class='f6'>Details</h3>
+      <p class="f6 lh-copy measure">
+        We have included two versions of this vulnerability.
+      </p>
+      <p class="f6 lh-copy measure">
+        On the dash, the message content is using the Django built-in
+        'safe' filter.
+      </p>
+      <p class="f6 lh-copy measure">
+        On the conversation page, we wrapped the message content in the
+        'autoescape off' tag.
+      </p>
+      <p class="f6 lh-copy measure">
+        We also changed the SESSION_COOKIE_HTTPONLY to False.
+        Changing this removed an extra layer of protection against cross site
+        scripting, by allowing an attacker to access the cookie more easily
+        using JavaScript.
+      </p>
+      <h3 class='f6'>Possible exploitation</h3>
+      <p class="f6 lh-copy measure">
+        A malicious user could send a message to another user, containing a
+        script in the message body. Because we didn't escape the HTML when
+        displaying the user input, the scripts will run in the victim's browser.
+      </p>
+      <p class="f6 lh-copy measure">
+        An attacker could use this to gain access to a user's cookies (so they
+        can hijack the user's session), show them a link to a malicious url,
+        or just annoy them with pop ups.
+      </p>
+      <p class="f6 lh-copy measure">
+        <b>OWASP Top 10 reference:</b>
+        <a href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)"
+          class='link dim'>
+          A7-Cross-Site Scripting (XSS)
+        </a>
+      </p>
+      <p class="f6 lh-copy measure">
+        <b>Django docs:</b>
+        <p>
+          <a href="https://docs.djangoproject.com/en/2.1/ref/settings/#session-cookie-httponly"
+            class='link dim'>
+            SESSION_COOKIE_HTTPONLY
+          </a>
+        </p>
+        <p>
+          <a href="https://docs.djangoproject.com/en/2.1/topics/security/#cross-site-scripting-xss-protection"
+            class='link dim'>
+            Cross site scripting protection
+          </a>
+        </p>
       </p>
     </div>
   </article>
@@ -72,19 +313,19 @@
         Admin
       </p>
       <h3 class='f6'>Details</h3>
-      <p class="f6 lh-copy measure mv0">
+      <p class="f6 lh-copy measure">
         This app has no logging and monitoring.
         Attackers rely on insufficient logging and monitoring to have time to
         conduct other attacks before the owner notices.
       </p>
       <h3 class='f6'>Possible exploitation</h3>
-      <p class="f6 lh-copy measure mv0">
-        For example, in this app there is also no rate limiting on the log in page.
-        Because there is insufficient logging and monitoring, the app owner would
-        not notice a brute force attack unless they happened to be watching at that
-        exact moment.
+      <p class="f6 lh-copy measure">
+        For example, in this app there is also no rate limiting on the log in
+        page. Because there is insufficient logging and monitoring, the app
+        owner would not notice a brute force attack unless they happened to be
+        watching at that exact moment.
       </p>
-      <p class="f6 lh-copy measure mv0">
+      <p class="f6 lh-copy measure">
         <b>OWASP Top 10 reference:</b>
         <a href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring"
           class='link dim'>
